@@ -9,12 +9,14 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import br.com.alura.gerenciador.Usuario;
 import br.com.alura.gerenciador.dao.UsuarioDAO;
 
 @WebServlet(urlPatterns="/login")
 public class Login extends HttpServlet{
+
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		Usuario usuario = new UsuarioDAO().buscaPorEmailESenha(req.getParameter("email"), req.getParameter("senha"));
@@ -23,9 +25,14 @@ public class Login extends HttpServlet{
 		if (usuario==null) {
 			writer.println("<html><body>Usuário não encontrado.</body></html>");
 		}else {
-			
+			// criação de cookie
 			Cookie ck = new Cookie("usuario.logado", usuario.getEmail());
-			resp.addCookie(ck);
+			ck.setMaxAge(10*60); // 60 segundos para manter o cookie
+			//resp.addCookie(ck);// removida rotina de gravar cookie para utilizar a session
+			// criação de session
+			HttpSession session = req.getSession();
+			session.setAttribute("usuario.logado", usuario);
+			//
 			writer.println("<html><body>Usuário: "+ck.getValue()+" conectado!");						
 		}
 	}

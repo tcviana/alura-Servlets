@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.eclipse.jdt.internal.compiler.ast.ForeachStatement;
 
+import br.com.alura.gerenciador.Usuario;
+
 @WebFilter(urlPatterns="/*")
 public class FiltroDeAuditoria implements Filter{
 
@@ -28,11 +30,20 @@ public class FiltroDeAuditoria implements Filter{
 		
 		HttpServletRequest req = (HttpServletRequest) request;
 		
+		// validação do usuário por cookie
 		String usuario = "Deslogado";
-		Cookie ck = getUsuario(req);
+		Cookie ck = new Cookies(req.getCookies()).getUsuarioLogado();
 		if (ck!=null) {
 			usuario = ck.getValue();
 		}
+		
+		usuario = "Deslogado";				
+		// validação de usuário com session
+		Usuario usr = (Usuario) req.getSession().getAttribute("usuario.logado");
+		if (usr!=null) {
+			usuario = usr.getEmail();
+		}
+		
 				
 		System.out.println("Usuário: <"+usuario+"> URI requisitada: "+req.getRequestURI());
 		chain.doFilter(request,response);
@@ -41,19 +52,6 @@ public class FiltroDeAuditoria implements Filter{
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {	
-	}
-	
-	private Cookie getUsuario(HttpServletRequest req) {
-		Cookie[] ck = req.getCookies();
-		if (ck==null) {
-			return null;
-		}
-		for (Cookie cookie : ck) {
-			if (cookie.getName().equals("usuario.logado")) {
-				return cookie;
-			}
-		}
-		return null;
-	}
+	}	
 
 }
