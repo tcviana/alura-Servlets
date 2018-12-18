@@ -31,7 +31,7 @@ public class Login extends HttpServlet{
 			//resp.addCookie(ck);// removida rotina de gravar cookie para utilizar a session
 			// criação de session
 			HttpSession session = req.getSession();
-			session.setAttribute("usuario.logado", usuario);
+			session.setAttribute("usuarioLogado", usuario);
 			//
 			writer.println("<html><body>Usuário: "+ck.getValue()+" conectado!");						
 		}

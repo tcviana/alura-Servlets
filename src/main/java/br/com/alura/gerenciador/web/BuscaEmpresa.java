@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Collection;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -37,7 +38,9 @@ public class BuscaEmpresa extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        PrintWriter writer = resp.getWriter();
+        // removida rotina abaixo para utilizar redirecionamento
+    	/*
+    	PrintWriter writer = resp.getWriter();
         writer.println("<html>");
         writer.println("<body>");
         writer.println("Resultado da busca:<br/>");
@@ -49,6 +52,12 @@ public class BuscaEmpresa extends HttpServlet {
         writer.println("</ul>");
         writer.println("</body>");
         writer.println("</html>");
+        */
+    	Collection<Empresa> empresas = new EmpresaDAO().buscaPorSimilaridade(req.getParameter("filtro"));
+    	RequestDispatcher disp = req.getRequestDispatcher("/WEB-INF/pages/buscaEmpresa.jsp");
+    	req.setAttribute("empresas", empresas);
+    	disp.forward(req, resp);
+    	
 
     }
 

@@ -26,7 +26,7 @@ public class Logout extends HttpServlet{
 		}
 		// remove session
 		HttpSession session = req.getSession();
-		session.removeAttribute("usuario.logado");
+		session.removeAttribute("usuarioLogado");
 		
 		// redirecionamento de resposta, não consegue acessar o diretório web-inf
 		//resp.sendRedirect("/WEB-INF/pages/logout.html");

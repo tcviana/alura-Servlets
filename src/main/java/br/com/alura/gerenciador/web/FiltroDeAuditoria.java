@@ -39,7 +39,7 @@ public class FiltroDeAuditoria implements Filter{
 		
 		usuario = "Deslogado";				
 		// validação de usuário com session
-		Usuario usr = (Usuario) req.getSession().getAttribute("usuario.logado");
+		Usuario usr = (Usuario) req.getSession().getAttribute("usuarioLogado");
 		if (usr!=null) {
 			usuario = usr.getEmail();
 		}
