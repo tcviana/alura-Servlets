@@ -1,18 +1,31 @@
 package br.com.alura.gerenciador.web;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Collection;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import br.com.alura.gerenciador.Empresa;
+import br.com.alura.gerenciador.dao.EmpresaDAO;
 
+public class BuscaEmpresa implements Tarefa {
+	public BuscaEmpresa () {
+		System.out.println("Instâncinciou uma servlet do tipo BuscaEmpresa "+this);
+	}
+	
+	@Override
+	public String executa(HttpServletRequest req, HttpServletResponse resp) {
+    	Collection<Empresa> empresas = new EmpresaDAO().buscaPorSimilaridade(req.getParameter("filtro"));
+    	req.setAttribute("empresas", empresas);
+    	return "/WEB-INF/pages/buscaEmpresa.jsp";    	
+	}
+}
+
+// inibida rotina de servet dedicado para utilizar o geral
+/*
+import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import br.com.alura.gerenciador.Empresa;
-import br.com.alura.gerenciador.dao.EmpresaDAO;
 
 @WebServlet(urlPatterns = "/busca")
 public class BuscaEmpresa extends HttpServlet {
@@ -52,7 +65,7 @@ public class BuscaEmpresa extends HttpServlet {
         writer.println("</ul>");
         writer.println("</body>");
         writer.println("</html>");
-        */
+        */ /*
     	Collection<Empresa> empresas = new EmpresaDAO().buscaPorSimilaridade(req.getParameter("filtro"));
     	RequestDispatcher disp = req.getRequestDispatcher("/WEB-INF/pages/buscaEmpresa.jsp");
     	req.setAttribute("empresas", empresas);
@@ -62,3 +75,4 @@ public class BuscaEmpresa extends HttpServlet {
     }
 
 }
+*/
